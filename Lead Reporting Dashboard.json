@@ -1,0 +1,460 @@
+{
+  "name": "Lead Reporting Dashboard",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -32
+      ],
+      "id": "3d97cf83-cf53-40b0-829b-fbdf1a91f5ad",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COUNT(*) AS total_leads\nFROM leads;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        -352,
+        -160
+      ],
+      "id": "0e35b701-7e84-4782-a036-004b4debfd50",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "BkP1a58vHoP6i3mx",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1OuqMSXGknDyjYps53gKntwgeATOIzUb9xG_i6tV_ebk",
+          "mode": "list",
+          "cachedResultName": "Lead Management Dashboard",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1OuqMSXGknDyjYps53gKntwgeATOIzUb9xG_i6tV_ebk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Dashboard",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1OuqMSXGknDyjYps53gKntwgeATOIzUb9xG_i6tV_ebk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Metric": "Total Leads",
+            " Value": "={{ $('Execute a SQL query').item.json.total_leads }}"
+          },
+          "matchingColumns": [
+            "Metric"
+          ],
+          "schema": [
+            {
+              "id": "Metric",
+              "displayName": "Metric",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Value",
+              "displayName": " Value",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -112,
+        -160
+      ],
+      "id": "fde2499c-a1a8-4608-b535-6bb452943bec",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ISt5aBHlYrbpi8XR",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COUNT(*) AS new_leads\nFROM leads\nWHERE status = 'NEW';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        -336,
+        16
+      ],
+      "id": "648e8d6a-b056-42a1-9e15-a24c3c74ed08",
+      "name": "Execute a SQL query1",
+      "credentials": {
+        "postgres": {
+          "id": "BkP1a58vHoP6i3mx",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1OuqMSXGknDyjYps53gKntwgeATOIzUb9xG_i6tV_ebk",
+          "mode": "list",
+          "cachedResultName": "Lead Management Dashboard",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1OuqMSXGknDyjYps53gKntwgeATOIzUb9xG_i6tV_ebk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Dashboard",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1OuqMSXGknDyjYps53gKntwgeATOIzUb9xG_i6tV_ebk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Metric": "NEW Leads",
+            " Value": "={{ $json.new_leads }}"
+          },
+          "matchingColumns": [
+            "Metric"
+          ],
+          "schema": [
+            {
+              "id": "Metric",
+              "displayName": "Metric",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Value",
+              "displayName": " Value",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -112,
+        16
+      ],
+      "id": "a1c619af-f979-444c-820c-e2066832e178",
+      "name": "Append or update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ISt5aBHlYrbpi8XR",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COUNT(*) AS contacted_leads\nFROM leads\nWHERE status = 'CONTACTED';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        -336,
+        208
+      ],
+      "id": "929e1239-60ab-47c4-9a24-14063d8ae1c7",
+      "name": "Execute a SQL query2",
+      "credentials": {
+        "postgres": {
+          "id": "BkP1a58vHoP6i3mx",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1OuqMSXGknDyjYps53gKntwgeATOIzUb9xG_i6tV_ebk",
+          "mode": "list",
+          "cachedResultName": "Lead Management Dashboard",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1OuqMSXGknDyjYps53gKntwgeATOIzUb9xG_i6tV_ebk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Dashboard",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1OuqMSXGknDyjYps53gKntwgeATOIzUb9xG_i6tV_ebk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Metric": "CONTACTED Leads",
+            " Value": "={{ $json.contacted_leads }}"
+          },
+          "matchingColumns": [
+            "Metric"
+          ],
+          "schema": [
+            {
+              "id": "Metric",
+              "displayName": "Metric",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Value",
+              "displayName": " Value",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -112,
+        208
+      ],
+      "id": "59207d43-56e8-40df-b248-dd19799dff0a",
+      "name": "Append or update row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ISt5aBHlYrbpi8XR",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COUNT(*) AS closed_leads\nFROM leads\nWHERE status = 'CLOSED';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        -320,
+        400
+      ],
+      "id": "5bcbbf03-c124-4c95-8382-b4686ed75958",
+      "name": "Execute a SQL query3",
+      "credentials": {
+        "postgres": {
+          "id": "BkP1a58vHoP6i3mx",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1OuqMSXGknDyjYps53gKntwgeATOIzUb9xG_i6tV_ebk",
+          "mode": "list",
+          "cachedResultName": "Lead Management Dashboard",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1OuqMSXGknDyjYps53gKntwgeATOIzUb9xG_i6tV_ebk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Dashboard",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1OuqMSXGknDyjYps53gKntwgeATOIzUb9xG_i6tV_ebk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Metric": "CLOSED Leads",
+            " Value": "={{ $json.closed_leads }}"
+          },
+          "matchingColumns": [
+            "Metric"
+          ],
+          "schema": [
+            {
+              "id": "Metric",
+              "displayName": "Metric",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Value",
+              "displayName": " Value",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -96,
+        400
+      ],
+      "id": "2d31cda3-b76d-4ca2-9c9f-38280553308d",
+      "name": "Append or update row in sheet3",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ISt5aBHlYrbpi8XR",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Execute a SQL query1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Execute a SQL query2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Execute a SQL query3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        []
+      ]
+    },
+    "Execute a SQL query1": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query2": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query3": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "768551b5-edd5-4d39-8eb2-94e8a52af2da",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b2ecc441dfff5149947cdf287b08a9c74efd6a3960733581dfb8fc2deb412736"
+  },
+  "nodeGroups": [],
+  "id": "ImXLuIVYp9Ft8MDD",
+  "tags": []
+}

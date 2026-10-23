@@ -1,0 +1,104 @@
+{
+  "name": "Lead Follow-Up Reminder",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -496,
+        0
+      ],
+      "id": "228eb51f-6da8-4b8d-9c10-2d77abc9fba6",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT *\nFROM leads\nWHERE status = 'NEW'\nAND created_at < NOW() - INTERVAL '1 day';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        -272,
+        0
+      ],
+      "id": "f73499d5-6f3e-446b-8a0f-67e3f41fcb8b",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "BkP1a58vHoP6i3mx",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "Following up on your enquiry",
+        "message": "=Hi {{ $json.name }},  Just following up on your recent enquiry.  If you're still interested, reply to this email and a member of our team will get back to you.  Kind regards, Sales Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -48,
+        0
+      ],
+      "id": "5e422e5d-1f07-4186-8c2d-939ed72b1730",
+      "name": "Send a message",
+      "webhookId": "9637c302-a659-4663-83d5-d23c435a00ec",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "QRdILxWGdFfPMvYh",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "a01a59c0-9522-4b87-93ca-f8c07f929e0f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b2ecc441dfff5149947cdf287b08a9c74efd6a3960733581dfb8fc2deb412736"
+  },
+  "nodeGroups": [],
+  "id": "QOjMhP56qZom1fFe",
+  "tags": []
+}
